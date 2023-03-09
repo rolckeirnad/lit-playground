@@ -1,3 +1,10 @@
-const body = document.querySelector('body');
+import { LitElement, html } from "lit";
 
-body.textContent = "Hello webpack!"
+class MyApp extends LitElement {
+  render() {
+    return html`
+    <p>Hello Lit!</p>
+    `
+  }
+}
+customElements.define('my-app', MyApp)
