@@ -1,4 +1,5 @@
 import { css, html, LitElement } from "lit";
+import { classMap } from 'lit/directives/class-map.js';
 
 class WordViewer extends LitElement {
   static properties = {
@@ -19,6 +20,10 @@ class WordViewer extends LitElement {
     }
     pre {
       padding: 0.2em;
+    }
+    .backwards {
+      color: white;
+      background-color: violet;
     }
   `;
 
@@ -53,7 +58,10 @@ class WordViewer extends LitElement {
     const idx = ((this.idx % splittedWords.length) + splittedWords.length) % splittedWords.length;
     const actualWord = splittedWords[idx];
     return html`
-    <pre @click=${this.switchWordDirection}>${actualWord}</pre>
+    <pre
+      @click=${this.switchWordDirection}
+      class="${classMap({ backwards: this.playDirection === -1 })}"
+    >${actualWord}</pre>
     `;
   }
 }
