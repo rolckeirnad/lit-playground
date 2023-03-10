@@ -4,6 +4,7 @@ class WordViewer extends LitElement {
   static properties = {
     words: {},
     idx: { state: true },
+    playDirection: { state: true },
   }
 
   static styles = css`
@@ -25,10 +26,15 @@ class WordViewer extends LitElement {
     super();
     this.words = 'Initial value!';
     this.idx = 0;
+    this.playDirection = 1;
   }
 
-  // We use an array function to pass the correct component
-  nextWord = () => this.idx += 1;
+  // We use an arrow function to pass the correct component
+  nextWord = () => this.idx += this.playDirection;
+
+  switchWordDirection() {
+    this.playDirection *= -1;
+  }
 
   intervalTimer;
   connectedCallback() {
@@ -44,9 +50,10 @@ class WordViewer extends LitElement {
 
   render() {
     const splittedWords = this.words.split('.');
-    const actualWord = splittedWords[this.idx % splittedWords.length];
+    const idx = ((this.idx % splittedWords.length) + splittedWords.length) % splittedWords.length;
+    const actualWord = splittedWords[idx];
     return html`
-    <pre>${actualWord}</pre>
+    <pre @click=${this.switchWordDirection}>${actualWord}</pre>
     `;
   }
 }
