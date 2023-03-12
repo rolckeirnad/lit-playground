@@ -52,9 +52,27 @@ export class MotionCarousel extends LitElement {
 
     return html`
       <div class="fit">
-        <slot></slot>
+        <slot name="selected"></slot>
       </div>
     `;
+  }
+
+  // We need to remove the slot attribute from the previous assigned child.
+  previous = 0;
+
+  // This is a lifecycle method.
+  updated(changedProperties) {
+    // If the selected value is valid, we update slot and previous value.
+    if (changedProperties.has('selected') && this.hasValidSelected()) {
+      this.updateSlots();
+      this.previous = this.selected;
+    }
+  }
+
+  // We need to match the slot attribute with the slot name
+  updateSlots() {
+    this.children[this.previous]?.removeAttribute('slot');
+    this.children[this.selected]?.setAttribute('slot', 'selected');
   }
 
 }
