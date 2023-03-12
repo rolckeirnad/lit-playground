@@ -1,4 +1,5 @@
 import { css, html, LitElement } from "lit";
+import { styleMap } from "lit/directives/style-map.js";
 
 export class MotionCarousel extends LitElement {
   static styles = css`
@@ -18,6 +19,10 @@ export class MotionCarousel extends LitElement {
     position: relative;
     height: 100%;
     width: 100%;
+  }
+
+  .selected {
+    top: -100%;
   }
 
   ::slotted(*) {
@@ -53,14 +58,27 @@ export class MotionCarousel extends LitElement {
     this.dispatchEvent(changed);
   }
 
+  left = 0;
   render() {
     if (this.hasValidSelected()) {
       this.selectedInternal = this.selected;
     }
 
+    const animateLeft = ``;
+    const selectedLeft = ``;
+    const previousLeft = ``;
+
     return html`
-      <div class="fit" @click=${this.clickHandler}>
-        <slot name="selected"></slot>
+      <div class="fit"
+        @click=${this.clickHandler}
+        style=${styleMap({ left: animateLeft })}
+      >
+        <div class="fit" style=${styleMap({ left: previousLeft })}>
+          <slot name="previous"></slot>
+        </div>
+        <div class="fit selected" style=${styleMap({ left: selectedLeft })}>
+          <slot name="selected"></slot>
+        </div>
       </div>
     `;
   }
