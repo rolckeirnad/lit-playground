@@ -40,6 +40,16 @@ export class MotionCarousel extends LitElement {
     this.selected = 0;
   }
 
+  get selectedSlot() {
+    return (this.__selectedSlot ??=
+      this.renderRoot?.querySelector('slot[name="selected"]') ?? null);
+  }
+
+  get previousSlot() {
+    return (this.__previousSlot ??=
+      this.renderRoot?.querySelector('slot[name="previous"]') ?? null);
+  }
+
   selectedInternal = 0;
 
   get maxSelected() {
@@ -97,7 +107,11 @@ export class MotionCarousel extends LitElement {
 
   // We need to match the slot attribute with the slot name
   updateSlots() {
-    this.children[this.previous]?.removeAttribute('slot');
+    // unset old slot state
+    this.selectedSlot.assignedElements()[0]?.removeAttribute('slot');
+    this.previousSlot.assignedElements()[0]?.removeAttribute('slot');
+    // set slots
+    this.children[this.previous]?.setAttribute('slot', 'previous');
     this.children[this.selected]?.setAttribute('slot', 'selected');
   }
 
