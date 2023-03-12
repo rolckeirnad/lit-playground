@@ -26,7 +26,30 @@ export class MotionCarousel extends LitElement {
     height: 100%;
   }
   `
+  static properties = {
+    selected: { type: Number },
+  }
+
+  constructor() {
+    super();
+    this.selected = 0;
+  }
+
+  selectedInternal = 0;
+
+  get maxSelected() {
+    return this.childElementCount - 1;
+  }
+
+  hasValidSelected() {
+    return this.selected >= 0 && this.selected <= this.maxSelected;
+  }
+
   render() {
+    if (this.hasValidSelected()) {
+      this.selectedInternal = this.selected;
+    }
+
     return html`
       <div class="fit">
         <slot></slot>
