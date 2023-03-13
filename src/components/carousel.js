@@ -1,5 +1,6 @@
 import { css, html, LitElement } from "lit";
 import { styleMap } from "lit/directives/style-map.js";
+import { animate } from "@lit-labs/motion";
 
 export class MotionCarousel extends LitElement {
   static styles = css`
@@ -115,6 +116,7 @@ export class MotionCarousel extends LitElement {
 
     return html`
       <div class="fit"
+        ${animate()}
         @click=${this.clickHandler}
         style=${styleMap({ left: animateLeft })}
       >
@@ -127,6 +129,7 @@ export class MotionCarousel extends LitElement {
       </div>
       <div class="bar">
         <div class="indicator"
+          ${animate()}
           style=${styleMap({
             left: indicatorLeft,
             width: indicatorWidth,
