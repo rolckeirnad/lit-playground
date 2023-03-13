@@ -70,13 +70,25 @@ export class MotionCarousel extends LitElement {
 
   left = 0;
   render() {
-    if (this.hasValidSelected()) {
-      this.selectedInternal = this.selected;
-    }
-
-    const animateLeft = ``;
-    const selectedLeft = ``;
-    const previousLeft = ``;
+    // We keep track of the current and the previous displayed item.
+    const prev = this.selectedInternal;
+    const curr = (this.selectedInternal =
+      this.hasValidSelected() ? this.selected : this.selectedInternal);
+    // This is computed to prevent animating the first render
+    const shouldMove = this.hasUpdated && curr !== prev;
+    // We use this flags to determine the direction of movement
+    const atStart = prev === 0;
+    const toStart = curr === 0;
+    const atEnd = prev === this.maxSelected;
+    const toEnd = curr === this.maxSelected;
+    // This delta is calculated to be used in defining the container element position
+    const shouldAdvance = shouldMove &&
+      (atEnd ? toStart : atStart ? !toEnd : curr > prev);
+    const delta = (shouldMove ? Number(shouldAdvance) || -1 : 0) * 100;
+    this.left -= delta;
+    const animateLeft = `${this.left}%`;
+    const selectedLeft = `${-this.left}%`;
+    const previousLeft = `${-this.left - delta}%`;
 
     return html`
       <div class="fit"
