@@ -30,6 +30,25 @@ export class MotionCarousel extends LitElement {
     width: 100%;
     height: 100%;
   }
+  
+  .bar {
+    position: absolute;
+    bottom: 8px;
+    width: calc(100% - 16px);
+    left: 8px;
+    height: 8px;
+    background: rgba(200, 200, 200, 0.5);
+    border-radius: 8px;
+    pointer-events: none;
+  }
+
+  .indicator {
+    position: relative;
+    height: 100%;
+    width: 8px;
+    border-radius: 8px;
+    background: #eee;
+  }
   `
   static properties = {
     selected: { type: Number },
@@ -86,9 +105,13 @@ export class MotionCarousel extends LitElement {
       (atEnd ? toStart : atStart ? !toEnd : curr > prev);
     const delta = (shouldMove ? Number(shouldAdvance) || -1 : 0) * 100;
     this.left -= delta;
-    const animateLeft = `${this.left}%`;
-    const selectedLeft = `${-this.left}%`;
-    const previousLeft = `${-this.left - delta}%`;
+    const animateLeft = `${ this.left }% `;
+    const selectedLeft = `${ -this.left }% `;
+    const previousLeft = `${ -this.left - delta }% `;
+    // This code is for the indicator
+    const width = 100 / this.childElementCount;
+    const indicatorLeft = `${ width * curr }% `;
+    const indicatorWidth = `${ width }% `;
 
     return html`
       <div class="fit"
@@ -100,6 +123,15 @@ export class MotionCarousel extends LitElement {
         </div>
         <div class="fit selected" style=${styleMap({ left: selectedLeft })}>
           <slot name="selected"></slot>
+        </div>
+      </div>
+      <div class="bar">
+        <div class="indicator"
+          style=${styleMap({
+            left: indicatorLeft,
+            width: indicatorWidth,
+          })}
+        >
         </div>
       </div>
     `;
